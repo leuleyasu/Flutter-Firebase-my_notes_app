@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,77 +24,86 @@ class _RegisterState extends State<Register> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _email.dispose();
     _password.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Register"),
+ @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text("Register"),
+    ),
+    body: FutureBuilder(
+      future: Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
       ),
-      body: FutureBuilder(
-          future:  Firebase.initializeApp(
-           options: DefaultFirebaseOptions.currentPlatform,
-       ),
-        builder: (context, snapshot) {
-           switch(snapshot.connectionState){
-            case  ConnectionState.none:
-Column(
-          children: [
-            TextField(
-              controller: _email,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(hintText: "Email"),
-            ),
-           TextField(
-            controller: _password,
-              autocorrect: false,
-              enableSuggestions: false,
-              obscureText: true,
-              decoration: const InputDecoration(hintText: "Password"),
-            ),
-            TextButton(
-                onPressed: () async {
-
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            return Column(
+              children: [
+                TextField(
+                  controller: _email,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(hintText: "Email"),
+                ),
+                TextField(
+                  controller: _password,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  obscureText: true,
+                  decoration: const InputDecoration(hintText: "Password"),
+                ),
+                TextButton(
+                  onPressed: () async {
                     try {
-                        final email = _email.text;
-                  final password = _password.text;
+                      final email = _email.text;
+                      final password = _password.text;
 
-                 await  FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: email, password: password);
-
-
+                      await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                              email: email, password: password);
                     } on FirebaseAuthException catch (e) {
-  if (e.code == 'weak-password') {
-    print('The password provided is too weak.');
-  } else if (e.code == 'email-already-in-use') {
-    print('The account already exists for that email.');
-  }
+                      String errormessage='An error occured';
+                      if (e.code == 'weak-password') {
 
+                    errormessage='The password provided is too weak.';
+
+                      } else if (e.code == 'email-already-in-use') {
+
+                    errormessage='The account already exists for that email.';
+
+                        print('The account already exists for that email.');
+                      }
+
+                     ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errormessage),
+        ),
+      );
                     }
-
-                     catch (e) {
+                    catch (e) {
                       print(e);
                     }
+                  },
+                  child: const Text("Register"),
+                )
+              ],
+            );
 
-                }, child: const Text("Register"),
-               )
-          ],
- );
+          case ConnectionState.waiting:
+            return const Text("Loading...");
 
-default:return const Text("waiting connection");
+          default:
+            return const Text("Something went wrong...");
         }
 
-return const Text("someting went wrong");
-          }
+      },
+    ),
+  );
+}
 
-
-
-      ),
-    );
-  }
 }

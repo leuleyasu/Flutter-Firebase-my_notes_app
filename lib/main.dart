@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view/Register.dart';
@@ -25,3 +24,37 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      body: FutureBuilder(
+       future: Firebase.initializeApp(
+            options: DefaultFirebaseOptions.currentPlatform,
+          ),
+        builder: (context, snapshot) {
+switch(snapshot.connectionState){
+  case ConnectionState.done:
+  const Column(
+    children: [
+      Text("done")
+    ],
+
+  );
+  default:return const Text("waiting for connection");
+
+}return const Text("something went wrong");
+        },
+
+      ),
+    );
+  }
+}
