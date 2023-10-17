@@ -1,12 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view/verifyemail.dart';
-   import 'firebase_options.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
+enum Actionmenu {logout }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -24,4 +22,26 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+Future<bool>showLogOutDialog(BuildContext context){
+  return showDialog<bool>(context: context, builder: (_){
+    return  AlertDialog(
+      title: const Text("Signout"),
+      content: const Text("Are u sure u want to sign out?"),
+      actions: [
+        TextButton(onPressed: (){
+          Navigator.of(context).pop(false);
+        }, child: const Text("cancel")),
+        TextButton(onPressed: (){
+          Navigator.of(context).pop(true);
 
+        },
+        child: const Text("Logout"))
+
+
+      ],
+
+    );
+
+  }).then((value) =>value ?? false);
+
+}

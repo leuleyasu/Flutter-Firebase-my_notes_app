@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/view/Notes.dart';
+import 'package:flutter_application_1/view/login.dart';
 import 'package:flutter_application_1/view/verifyemail.dart';
 
 import '../firebase_options.dart';
@@ -15,9 +17,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-      body: FutureBuilder(
+    return  FutureBuilder(
        future: Firebase.initializeApp(
             options: DefaultFirebaseOptions.currentPlatform,
           ),
@@ -27,14 +27,18 @@ switch(snapshot.connectionState){
  final user= FirebaseAuth.instance.currentUser;
  final emailverified=user?.emailVerified??false;
  if(emailverified){
-  ScaffoldMessenger.of(context).
-  showSnackBar(const
-  SnackBar(content: Text("Welcome")));
- }else{
-  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const VerifyEmail()));
+  //  ScaffoldMessenger.of(context).
+  // showSnackBar(const
+  // SnackBar(content: Text("Welcome")));
+  return const NotesPage();
+
+ }else if(!emailverified){
+    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const VerifyEmail()));
   ScaffoldMessenger.of(context).
   showSnackBar(const
   SnackBar(content: Text("please verify email address")));
+return const Login();
+
  }
   print(user);
   const Column(
@@ -48,7 +52,7 @@ switch(snapshot.connectionState){
 }return const Text("something went wrong");
         },
 
-      ),
-    );
+      );
+
   }
 }
