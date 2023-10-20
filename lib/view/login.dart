@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/constants/Routes.dart';
 import 'dart:developer' as developertool show log;
 import '../firebase_options.dart';
@@ -75,21 +76,26 @@ class _LoginState extends State<Login> {
                             }
 
                       } on FirebaseAuthException catch (e) {
-                        String errormessage = 'An error occured';
+                        showErrorDialog(context, "An error occured");
+                        // String errormessage = 'An error occured';
                         if (e.code == 'user-not-found') {
-                          errormessage = 'User not found';
+                        showErrorDialog(context, "User not found");
+
+                          // errormessage = 'User not found';
                         } else if (e.code == 'Wrong-password') {
-                          errormessage =
-                              'The account already exists for that email.';
+                        showErrorDialog(context,'The account already exists for that email.');
+
+                          // errormessage =
+                          //     'The account already exists for that email.';
 
 
                         }
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(errormessage),
-                          ),
-                        );
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   SnackBar(
+                        //     content: Text(errormessage),
+                        //   ),
+                        // );
 
                       } catch (e) {
                        developertool.log(e.toString());

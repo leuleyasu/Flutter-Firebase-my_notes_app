@@ -53,4 +53,12 @@ Future<bool>showLogOutDialog(BuildContext context){
 
   }).then((value) =>value ?? false);
 
+}Future<void>showErrorDialog(BuildContext context, String text){
+
+return showDialog(context: context, builder: (_){
+  return AlertDialog(
+    title: const Text("An Error occured"),
+    content: Text(text),
+  );
+});
 }

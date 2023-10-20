@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developertool show log;
-
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/constants/Routes.dart';
 class NotesPage extends StatefulWidget {
