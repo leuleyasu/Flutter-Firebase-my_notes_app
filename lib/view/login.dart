@@ -2,8 +2,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
-
+import 'package:flutter_application_1/view/constants/Routes.dart';
+import 'dart:developer' as developertool show log;
 import '../firebase_options.dart';
 
 class Login extends StatefulWidget {
@@ -57,6 +57,7 @@ class _LoginState extends State<Login> {
                     enableSuggestions: false,
                     obscureText: true,
                     decoration: const InputDecoration(hintText: "Password"),
+
                   ),
                   TextButton(
 
@@ -67,6 +68,11 @@ class _LoginState extends State<Login> {
 
                         await FirebaseAuth.instance.signInWithEmailAndPassword(
                             email: email, password: password);
+                            if(context.mounted){
+                            // Navigator.pushAndRemoveUntil(context, './', (route) => false);
+                               Navigator.pushNamedAndRemoveUntil(context, notesroute, (route) => false);
+
+                            }
 
                       } on FirebaseAuthException catch (e) {
                         String errormessage = 'An error occured';
@@ -86,11 +92,15 @@ class _LoginState extends State<Login> {
                         );
 
                       } catch (e) {
-                        print(e);
+                       developertool.log(e.toString());
                       }
                     },
                     child: const Text("Login"),
-                  )
+                  ),
+                  TextButton(onPressed: (){
+                      Navigator.pushNamedAndRemoveUntil(context, registerroute, (route) => false);
+
+                  }, child: const Text("Register Here"))
                 ],
               );
 

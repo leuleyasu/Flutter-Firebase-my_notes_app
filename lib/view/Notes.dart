@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as developertool show log;
 
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/view/constants/Routes.dart';
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
 
@@ -26,7 +27,10 @@ final shouldlogout= await showLogOutDialog(context);
 developertool.log(shouldlogout.toString());
 if(shouldlogout){
   await FirebaseAuth.instance.signOut();
-Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);
+if(context.mounted){
+Navigator.pushNamedAndRemoveUntil(context, loginRoute, (route) => false);
+
+}
 
 }
 developertool.log(MenuAction.logout.toString());
