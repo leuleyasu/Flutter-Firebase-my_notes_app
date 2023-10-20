@@ -89,7 +89,8 @@ devtools.log("The account already exists for that email.");
                     }
                   },
                   child: const Text("Register"),
-                )
+                ),
+                TextButton(onPressed: (){}, child: const Text("Login Here"))
               ],
             );
 

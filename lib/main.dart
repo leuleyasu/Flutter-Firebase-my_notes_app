@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view/Notes.dart';
 import 'package:flutter_application_1/view/Register.dart';
+import 'package:flutter_application_1/view/constants/Routes.dart';
 import 'package:flutter_application_1/view/login.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,9 +23,9 @@ class MyApp extends StatelessWidget {
       ),
       // home: const NotesPage(),
       routes: {
-        './':(context)=> const NotesPage(),
-        '/Register':(context)=>const Register(),
-        '/Login':(context)=>const Login()
+        notesroute:(context)=> const NotesPage(),
+        registerroute:(context)=>const Register(),
+        loginRoute:(context)=>const Login()
 
       }
     );
