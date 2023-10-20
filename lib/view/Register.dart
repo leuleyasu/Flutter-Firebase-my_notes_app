@@ -1,10 +1,9 @@
-// ignore: file_names
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../firebase_options.dart';
-
+import 'dart:developer' as devtools show log;
 class Register extends StatefulWidget {
   const Register({super.key});
 
@@ -75,8 +74,8 @@ Widget build(BuildContext context) {
                       } else if (e.code == 'email-already-in-use') {
 
                     errormessage='The account already exists for that email.';
-
-                        print('The account already exists for that email.');
+devtools.log("The account already exists for that email.");
+                        // print('');
                       }
 
                      ScaffoldMessenger.of(context).showSnackBar(
@@ -86,7 +85,7 @@ Widget build(BuildContext context) {
       );
                     }
                     catch (e) {
-                      print(e);
+                     devtools.log(e.toString());
                     }
                   },
                   child: const Text("Register"),
