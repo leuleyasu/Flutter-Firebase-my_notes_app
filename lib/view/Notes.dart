@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developertool show log;
 
@@ -22,6 +24,12 @@ onSelected: (value)async{
     case MenuAction.logout:
 final shouldlogout= await showLogOutDialog(context);
 developertool.log(shouldlogout.toString());
+if(shouldlogout){
+  await FirebaseAuth.instance.signOut();
+Navigator.pushNamedAndRemoveUntil(context, '/Login', (route) => false);
+
+}
+developertool.log(MenuAction.logout.toString());
       break;
     default:
   }
@@ -33,7 +41,8 @@ developertool.log(shouldlogout.toString());
   ];
 }
 
-  )
+  ),
+
 ],
       ),
 
