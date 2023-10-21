@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/view/Notes.dart';
 import 'package:flutter_application_1/view/Register.dart';
@@ -55,4 +56,40 @@ Future<bool> showLogOutDialog(BuildContext context) {
           ],
         );
       }).then((value) => value ?? false);
+}
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  @override
+  Widget build(BuildContext context) {
+   return FutureBuilder(
+  builder: (context, snapshot) {
+    switch (snapshot.connectionState) {
+      case ConnectionState.done:
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          if (user.emailVerified) {
+            return const NotesPage();
+          } else {
+            return const VerifyEmail();
+          }
+        }
+        // If user is null or email is not verified, you might want to return a login page or something else.
+        return const Login();
+
+      case ConnectionState.waiting:
+        return const Text("waiting ....");
+
+      default:
+        return const Text("something went wrong");
+    }
+  },
+);
+
+}
 }

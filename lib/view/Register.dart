@@ -1,7 +1,7 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/constants/Routes.dart';
 
 import '../firebase_options.dart';
@@ -72,6 +72,9 @@ Widget build(BuildContext context) {
                               if(context.mounted){
                               Navigator.of(context).pushNamed(verifyemail);
                               }
+                             final user =FirebaseAuth.instance.currentUser;
+                                 user?.sendEmailVerification();
+
                     } on FirebaseAuthException catch (e) {
                       // String errormessage='An error occured';
                       if (e.code == 'weak-password') {
