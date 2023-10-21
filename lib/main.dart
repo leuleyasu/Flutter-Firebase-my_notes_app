@@ -80,14 +80,13 @@ class _HomepageState extends State<Homepage> {
           }
         }
         // If user is null or email is not verified, you might want to return a login page or something else.
-        // For now, I'll return an empty container as a placeholder.
-        return Container();
+        return const Login();
 
       case ConnectionState.waiting:
         return const Text("waiting ....");
 
       default:
-        return const Text("something wrong");
+        return const Text("something went wrong");
     }
   },
 );

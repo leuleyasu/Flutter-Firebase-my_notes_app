@@ -66,7 +66,13 @@ class _LoginState extends State<Login> {
                       try {
                         final email = _email.text;
                         final password = _password.text;
+final user= FirebaseAuth.instance.currentUser;
+if(user?.emailVerified?? false){
+Navigator.of(context).pushNamedAndRemoveUntil(notesroute, (route) => false);
+}else{
+Navigator.of(context).pushNamedAndRemoveUntil(verifyemail, (route) => false);
 
+}
                         await FirebaseAuth.instance.signInWithEmailAndPassword(
                             email: email, password: password);
 
