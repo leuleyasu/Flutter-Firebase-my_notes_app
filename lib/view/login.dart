@@ -2,9 +2,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/constants/Routes.dart';
-import 'dart:developer' as developertool show log;
+import 'dart:developer' as devtools show log;
 import '../firebase_options.dart';
 import '../utilities/ShowErrorDialog.dart';
 
@@ -70,22 +69,26 @@ class _LoginState extends State<Login> {
 
                         await FirebaseAuth.instance.signInWithEmailAndPassword(
                             email: email, password: password);
-                            if(context.mounted){
-                            // Navigator.pushAndRemoveUntil(context, './', (route) => false);
+
+                              if(context.mounted){
                                Navigator.pushNamedAndRemoveUntil(context, notesroute, (route) => false);
 
-                            }
+                              }
+
+
+
 
                       } on FirebaseAuthException catch (e) {
                         //  showErrorDialog(context, "An internal error has occurred.");
                         // String errormessage = 'An error occured';
                         if (e.code == 'user-not-found') {
                         showErrorDialog(context, "User not found");
+                    devtools.log("user not found.");
 
                           // errormessage = 'User not found';
                         } else if (e.code == 'Wrong-password') {
-                        showErrorDialog(context,'The account already exists for that email.');
-developertool.log(e.code.toString());
+                        showErrorDialog(context,'wrong password');
+                               devtools.log(e.code.toString());
                           // errormessage =
                           //     'The account already exists for that email.';
 
