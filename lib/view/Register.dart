@@ -2,9 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/view/constants/Routes.dart';
 
 import '../firebase_options.dart';
 import 'dart:developer' as devtools show log;
+
+import '../utilities/ShowErrorDialog.dart';
 class Register extends StatefulWidget {
   const Register({super.key});
 
@@ -66,8 +69,11 @@ Widget build(BuildContext context) {
                       await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
                               email: email, password: password);
+                              if(context.mounted){
+                              Navigator.of(context).pushNamed(verifyemail);
+                              }
                     } on FirebaseAuthException catch (e) {
-                      String errormessage='An error occured';
+                      // String errormessage='An error occured';
                       if (e.code == 'weak-password') {
 
                     // errormessage='The password provided is too weak.';
@@ -89,12 +95,17 @@ Widget build(BuildContext context) {
       // );
                     }
                     catch (e) {
-                     devtools.log(e.toString());
+                    showErrorDialog(context,e.toString());
+                    //  devtools.log(e.toString());
                     }
                   },
                   child: const Text("Register"),
                 ),
-                TextButton(onPressed: (){}, child: const Text("Login Here"))
+                TextButton(onPressed: (){
+                  Navigator.pushNamedAndRemoveUntil(context, loginRoute, (route) => false);
+
+
+                }, child: const Text("Login Here"))
               ],
             );
 

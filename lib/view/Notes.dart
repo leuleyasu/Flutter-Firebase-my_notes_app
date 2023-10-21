@@ -14,17 +14,21 @@ class _NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: const Text("Notes"),
+
 actions:  [
   PopupMenuButton<MenuAction>(
 onSelected: (value)async{
+
   switch (value) {
     case MenuAction.logout:
 final shouldlogout= await showLogOutDialog(context);
 developertool.log(shouldlogout.toString());
 if(shouldlogout){
   await FirebaseAuth.instance.signOut();
+
 if(context.mounted){
 Navigator.pushNamedAndRemoveUntil(context, loginRoute, (route) => false);
 

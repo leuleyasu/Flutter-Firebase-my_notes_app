@@ -6,6 +6,7 @@ import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/view/constants/Routes.dart';
 import 'dart:developer' as developertool show log;
 import '../firebase_options.dart';
+import '../utilities/ShowErrorDialog.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -76,7 +77,7 @@ class _LoginState extends State<Login> {
                             }
 
                       } on FirebaseAuthException catch (e) {
-                        showErrorDialog(context, "An error occured");
+                        //  showErrorDialog(context, "An internal error has occurred.");
                         // String errormessage = 'An error occured';
                         if (e.code == 'user-not-found') {
                         showErrorDialog(context, "User not found");
@@ -84,7 +85,7 @@ class _LoginState extends State<Login> {
                           // errormessage = 'User not found';
                         } else if (e.code == 'Wrong-password') {
                         showErrorDialog(context,'The account already exists for that email.');
-
+developertool.log(e.code.toString());
                           // errormessage =
                           //     'The account already exists for that email.';
 
@@ -98,7 +99,9 @@ class _LoginState extends State<Login> {
                         // );
 
                       } catch (e) {
-                       developertool.log(e.toString());
+                        showErrorDialog(context,e.toString());
+
+                      //  developertool.log(e.toString());
                       }
                     },
                     child: const Text("Login"),
