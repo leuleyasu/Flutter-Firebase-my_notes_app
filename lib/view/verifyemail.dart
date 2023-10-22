@@ -43,16 +43,26 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         user?.sendEmailVerification();
                       },
                       child: const Text("send email verfication")),
-                   
+
                   const SizedBox(
                     height: 30,
                   ),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, registerroute, (route) => false);
-                      },
-                      child: const Text("Restart"))
+                  Row(
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, registerroute, (route) => false);
+                          },
+                          child: const Text("Restart")),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, loginRoute, (route) => false);
+                          },
+                          child: const Text("Login"))
+                    ],
+                  )
                 ],
               );
             case ConnectionState.waiting:
