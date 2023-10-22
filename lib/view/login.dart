@@ -58,47 +58,44 @@ class _LoginState extends State<Login> {
                     enableSuggestions: false,
                     obscureText: true,
                     decoration: const InputDecoration(hintText: "Password"),
-
                   ),
                   TextButton(
-
-                    onPressed: ( ) async {
+                    onPressed: () async {
                       try {
                         final email = _email.text;
                         final password = _password.text;
-final user= FirebaseAuth.instance.currentUser;
-if(user?.emailVerified?? false){
-Navigator.of(context).pushNamedAndRemoveUntil(notesroute, (route) => false);
-}else{
-Navigator.of(context).pushNamedAndRemoveUntil(verifyemail, (route) => false);
-
-}
                         await FirebaseAuth.instance.signInWithEmailAndPassword(
                             email: email, password: password);
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user?.emailVerified ?? false) {
+                          if (context.mounted) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                notesroute, (route) => false);
+                          }
+                        } else {
+                          if (context.mounted) {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                verifyemail, (route) => false);
+                          }
+                        }
 
-                              if(context.mounted){
-                               Navigator.pushNamedAndRemoveUntil(context, notesroute, (route) => false);
-
-                              }
-
-
-
-
+                        if (context.mounted) {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, notesroute, (route) => false);
+                        }
                       } on FirebaseAuthException catch (e) {
                         //  showErrorDialog(context, "An internal error has occurred.");
                         // String errormessage = 'An error occured';
                         if (e.code == 'user-not-found') {
-                        showErrorDialog(context, "User not found");
-                    devtools.log("user not found.");
+                          showErrorDialog(context, "User not found");
+                          devtools.log("user not found.");
 
                           // errormessage = 'User not found';
                         } else if (e.code == 'Wrong-password') {
-                        showErrorDialog(context,'wrong password');
-                               devtools.log(e.code.toString());
+                          showErrorDialog(context, 'wrong password');
+                          devtools.log(e.code.toString());
                           // errormessage =
                           //     'The account already exists for that email.';
-
-
                         }
 
                         // ScaffoldMessenger.of(context).showSnackBar(
@@ -106,19 +103,20 @@ Navigator.of(context).pushNamedAndRemoveUntil(verifyemail, (route) => false);
                         //     content: Text(errormessage),
                         //   ),
                         // );
-
                       } catch (e) {
-                        showErrorDialog(context,e.toString());
+                        showErrorDialog(context, e.toString());
 
-                      //  developertool.log(e.toString());
+                        //  developertool.log(e.toString());
                       }
                     },
                     child: const Text("Login"),
                   ),
-                  TextButton(onPressed: (){
-                      Navigator.pushNamedAndRemoveUntil(context, registerroute, (route) => false);
-
-                  }, child: const Text("Register Here"))
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, registerroute, (route) => false);
+                      },
+                      child: const Text("Register Here"))
                 ],
               );
 
