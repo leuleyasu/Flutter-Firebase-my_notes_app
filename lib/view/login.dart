@@ -1,13 +1,12 @@
-// ignore: file_names
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/Routes.dart';
-import 'package:flutter_application_1/services/Auth/auth_provider.dart';
-import 'package:flutter_application_1/services/Auth/auth_service.dart';
+import 'package:flutter_application_1/services/auth/auth_exception.dart';
+import 'package:flutter_application_1/services/auth/auth_service.dart';
 import 'dart:developer' as devtools show log;
 import '../firebase_options.dart';
-import '../services/Auth/firbase_auth_provider.dart';
 import '../utilities/ShowErrorDialog.dart';
 
 class Login extends StatefulWidget {
@@ -42,9 +41,7 @@ class _LoginState extends State<Login> {
         title: const Text("Login"),
       ),
       body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
+        future: AuthService.firbase().initializeApp(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
@@ -65,14 +62,13 @@ class _LoginState extends State<Login> {
                   TextButton(
                     onPressed: () async {
                       try {
-                       
+
 
                         final email = _email.text;
                         final password = _password.text;
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                            email: email, password: password);
-                        final user = FirebaseAuth.instance.currentUser;
-                        if (user?.emailVerified ?? false) {
+                        await AuthService.firbase().login(email: email, password: password);
+                        final user = AuthService.firbase().currentUser;
+                        if (user?.isEmailVerfied ?? false) {
                           if (context.mounted) {
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 notesroute, (route) => false);
@@ -88,27 +84,16 @@ class _LoginState extends State<Login> {
                           Navigator.pushNamedAndRemoveUntil(
                               context, notesroute, (route) => false);
                         }
-                      } on FirebaseAuthException catch (e) {
-                        //  showErrorDialog(context, "An internal error has occurred.");
-                        // String errormessage = 'An error occured';
-                        if (e.code == 'user-not-found') {
-                          showErrorDialog(context, "User not found");
-                          devtools.log("user not found.");
+                      }  on UserNotFoundAuthException {
+                        await showErrorDialog(context, 'user not found');
+                      }  on WrongPasswordAuthException {
+                        await showErrorDialog(context, 'wrong password');
+                      } on GenericAuthException{
+                        showErrorDialog(context, "Authentication Error");
 
-                          // errormessage = 'User not found';
-                        } else if (e.code == 'Wrong-password') {
-                          showErrorDialog(context, 'wrong password');
-                          devtools.log(e.code.toString());
-                          // errormessage =
-                          //     'The account already exists for that email.';
-                        }
+                      }
 
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   SnackBar(
-                        //     content: Text(errormessage),
-                        //   ),
-                        // );
-                      } catch (e) {
+                       catch (e) {
                         showErrorDialog(context, e.toString());
 
                         //  developertool.log(e.toString());

@@ -1,14 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_application_1/constants/Routes.dart';
+import 'package:flutter_application_1/services/auth/auth_exception.dart';
+import 'package:flutter_application_1/services/auth/auth_service.dart';
+import 'dart:developer' as devtools show log;
+
+import 'package:flutter_application_1/utilities/ShowErrorDialog.dart';
 
 class VerifyEmail extends StatefulWidget {
   const VerifyEmail({super.key});
   @override
   State<VerifyEmail> createState() => _VerifyEmailState();
 }
+
 class _VerifyEmailState extends State<VerifyEmail> {
   // TextEditingController emailverifycontroller=TextEditingController();
   @override
@@ -36,9 +41,8 @@ class _VerifyEmailState extends State<VerifyEmail> {
                       "we've sent you an email verfication .please open and verify your account"),
                   const Text("if you haven't recieved press the button below"),
                   TextButton(
-                      onPressed: () {
-                        final user = FirebaseAuth.instance.currentUser;
-                        user?.sendEmailVerification();
+                      onPressed: () async {
+                        await AuthService.firbase().sendEmailVerfication();
                       },
                       child: const Text("send email verfication")),
 
@@ -48,9 +52,14 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   Row(
                     children: [
                       TextButton(
-                          onPressed: () {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, registerroute, (route) => false);
+                          onPressed: () async {
+                            try {
+                              await AuthService.firbase().logout();
+                            } on UserNotFoundAuthException {
+                              await showErrorDialog(context, "user not found");
+                            } catch (e) {
+                              devtools.log(e.toString());
+                            }
                           },
                           child: const Text("Restart")),
                       TextButton(

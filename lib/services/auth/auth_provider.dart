@@ -1,4 +1,4 @@
-import 'package:flutter_application_1/services/auth_user.dart';
+import 'package:flutter_application_1/services/auth/auth_user.dart';
 
 abstract class AuthProvider {
   AuthUser? get currentUser;
