@@ -1,6 +1,6 @@
-import 'package:flutter_application_1/services/Auth/auth_provider.dart';
-import 'package:flutter_application_1/services/Auth/firbase_auth_provider.dart';
-import 'package:flutter_application_1/services/auth_user.dart';
+import 'package:flutter_application_1/services/auth/auth_provider.dart';
+import 'package:flutter_application_1/services/auth/firbase_auth_provider.dart';
+import 'package:flutter_application_1/services/auth/auth_user.dart';
 
 class AuthService implements AuthProvider{
     @override

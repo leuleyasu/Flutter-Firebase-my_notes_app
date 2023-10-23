@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/services/auth/auth_service.dart';
 import 'package:flutter_application_1/view/Notes.dart';
 import 'package:flutter_application_1/view/login.dart';
 import 'package:flutter_application_1/view/verifyemail.dart';
-
+import 'dart:developer' as developertool show log;
 import '../firebase_options.dart';
 
 class Homepage extends StatefulWidget {
@@ -18,35 +19,26 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return  FutureBuilder(
-       future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform,
-          ),
+       future: AuthService.firbase().initializeApp(),
         builder: (context, snapshot) {
 switch(snapshot.connectionState){
   case ConnectionState.done:
- final user= FirebaseAuth.instance.currentUser;
- final emailverified=user?.emailVerified??false;
- if(emailverified){
+ final user= AuthService.firbase().currentUser;
+ if(user!=null){
+ if(user.isEmailVerfied){
   //  ScaffoldMessenger.of(context).
   // showSnackBar(const
   // SnackBar(content: Text("Welcome")));
   return const NotesPage();
 
- }else if(!emailverified){
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const VerifyEmail()));
-  ScaffoldMessenger.of(context).
-  showSnackBar(const
-  SnackBar(content: Text("please verify email address")));
-return const Login();
+ }else {
+return const VerifyEmail();
 
  }
-  print(user);
-  const Column(
-    children: [
+ }
 
-    ],
+ developertool.log(user.toString());
 
-  );
   default:return const Text("waiting for connection");
 
 }return const Text("something went wrong");
