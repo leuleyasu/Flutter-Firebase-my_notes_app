@@ -80,7 +80,7 @@ class _RegisterState extends State<Register> {
                       } on GenericAuthException {
                         await showErrorDialog(context, 'Failed to Register');
                       } catch (e) {
-                        showErrorDialog(context, e.toString());
+                       await showErrorDialog(context, e.toString());
                           devtools.log(e.toString());
                       }
                     },
