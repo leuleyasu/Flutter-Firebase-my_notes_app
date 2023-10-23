@@ -2,15 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_options.dart';
-import 'package:flutter_application_1/view/constants/Routes.dart';
+import 'package:flutter_application_1/constants/Routes.dart';
 
 class VerifyEmail extends StatefulWidget {
   const VerifyEmail({super.key});
-
   @override
   State<VerifyEmail> createState() => _VerifyEmailState();
 }
-
 class _VerifyEmailState extends State<VerifyEmail> {
   // TextEditingController emailverifycontroller=TextEditingController();
   @override

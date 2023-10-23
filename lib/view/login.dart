@@ -2,9 +2,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/view/constants/Routes.dart';
+import 'package:flutter_application_1/constants/Routes.dart';
+import 'package:flutter_application_1/services/Auth/auth_provider.dart';
+import 'package:flutter_application_1/services/Auth/auth_service.dart';
 import 'dart:developer' as devtools show log;
 import '../firebase_options.dart';
+import '../services/Auth/firbase_auth_provider.dart';
 import '../utilities/ShowErrorDialog.dart';
 
 class Login extends StatefulWidget {
@@ -62,6 +65,8 @@ class _LoginState extends State<Login> {
                   TextButton(
                     onPressed: () async {
                       try {
+                       
+
                         final email = _email.text;
                         final password = _password.text;
                         await FirebaseAuth.instance.signInWithEmailAndPassword(
