@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developertool show log;
-import 'package:flutter_application_1/main.dart';
-import 'package:flutter_application_1/view/constants/Routes.dart';
+import 'package:flutter_application_1/constants/Routes.dart';
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
 
@@ -55,4 +54,26 @@ developertool.log(MenuAction.logout.toString());
     );
   }
 
+}
+Future<bool> showLogOutDialog(BuildContext context) {
+  return showDialog<bool>(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text("Signout"),
+          content: const Text("Are u sure u want to sign out?"),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text("cancel")),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text("Logout"))
+          ],
+        );
+      }).then((value) => value ?? false);
 }
