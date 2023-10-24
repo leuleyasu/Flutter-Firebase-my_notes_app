@@ -5,7 +5,7 @@ import 'package:flutter_application_1/services/auth/auth_user.dart';
 
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
-
+import 'dart:developer'as developertool show log;
 import '../../firebase_options.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
@@ -34,7 +34,6 @@ await Firebase.initializeApp(
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        // Handle weak password error
         throw WeakPasswordAuthException();
       } else if (e.code == 'email-already-in-use') {
         throw EmailAlreadyInUseExistAuthException();
@@ -70,20 +69,27 @@ await Firebase.initializeApp(
       password: password,
     );
     final user = userCredential.user;
-    if (user != null) {
+    if (user!= null) {
       return AuthUser.fromFirebase(user);
     } else {
       throw UserNotFoundAuthException();
     }
   } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-      throw UserNotFoundAuthException();
-    } else if (e.code == 'wrong-password') {
-      throw WrongPasswordAuthException();
-    }else{
-      throw GenericAuthException();
-    }
-  } catch (e) {
+  if (e.code == 'user-not-found') {
+    throw UserNotFoundAuthException();
+  }
+  else if (e.code == 'wrong-password')
+  {
+    throw WrongPasswordAuthException();
+  }
+  else if (e.code == 'invalid-email') {
+    throw InvalidEmailException();
+  }
+   else {
+    throw GenericAuthException();
+  }
+}
+ catch (e) {
     throw GenericAuthException();
   }
 }
