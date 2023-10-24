@@ -3,7 +3,8 @@ import 'package:flutter_application_1/constants/Routes.dart';
 import 'package:flutter_application_1/services/auth/auth_exception.dart';
 import 'package:flutter_application_1/services/auth/auth_service.dart';
 import '../utilities/ShowErrorDialog.dart';
-import 'dart:developer'as developertool show log;
+import 'dart:developer' as developertool show log;
+
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -82,16 +83,11 @@ class _LoginState extends State<Login> {
                         await showErrorDialog(context, 'user not found');
                       } on WrongPasswordAuthException {
                         await showErrorDialog(context, 'wrong password');
-                       }
-                        on InvalidEmailException {
+                      } on InvalidEmailException {
                         await showErrorDialog(context, 'invalid email');
-                       }
-                       on GenericAuthException {
+                      } on GenericAuthException {
                         await showErrorDialog(context, 'Authentication Error');
-                      }
-
-
-                      catch (e) {
+                      } catch (e) {
                         await showErrorDialog(context, e.toString());
                         developertool.log(e.toString());
 

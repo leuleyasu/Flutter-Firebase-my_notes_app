@@ -34,7 +34,6 @@ await Firebase.initializeApp(
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        // Handle weak password error
         throw WeakPasswordAuthException();
       } else if (e.code == 'email-already-in-use') {
         throw EmailAlreadyInUseExistAuthException();
