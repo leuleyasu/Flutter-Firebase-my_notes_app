@@ -1,10 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/Routes.dart';
 import 'package:flutter_application_1/services/auth/auth_exception.dart';
 import 'package:flutter_application_1/services/auth/auth_service.dart';
-
-import '../firebase_options.dart';
 import 'dart:developer' as devtools show log;
 
 import '../utilities/ShowErrorDialog.dart';
