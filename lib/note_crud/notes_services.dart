@@ -19,6 +19,28 @@ class CouldDeleteNoteException implements Exception{}
 class NotesService {
   Database? _db;
 
+Future<DatabaseUser>createUser({required String email})async{
+  final db =_getDatabaseOrThrow();
+  final results=await db.query(userTable,limit: 1,
+  where: "email=?",whereArgs: [email.toLowerCase()]);
+  if (results.isNotEmpty) {
+throw UserAlreadyExistException();
+  }
+// create the user
+final userId= await db.insert(userTable, { emailColumn:email.toLowerCase() });
+return DatabaseUser(id: userId, email: email);
+
+}
+Future<void> deleteUser({required String email})async{
+  final db =_getDatabaseOrThrow();
+  // delete the user
+final deleteCount= await db.delete(userTable,where: 'email=?',whereArgs: [email.toLowerCase()]);
+
+if (deleteCount!=1) {
+  throw CouldNotDelteUserException();
+}
+
+}
 
 
   Database _getDatabaseOrThrow(){
