@@ -19,6 +19,38 @@ class CouldDeleteNoteException implements Exception{}
 class NotesService {
   Database? _db;
 
+Future<void>deleteNote({required int id})async{
+final db=_getDatabaseOrThrow();
+final deletecount =db.delete(noteTable,
+where: 'id=?',whereArgs: [id]);
+if (deletecount.isNull) {
+  throw CouldDeleteNoteException();
+}
+}
+Future<DatabaseNote>createNote({required DatabaseUser owner})async{
+final db=_getDatabaseOrThrow();
+
+final dbuser=await getUser(email: owner.email);
+if (dbuser!=owner) {
+  throw CouldNotFindUserException();
+}
+const text='';
+// create the note
+final noteid=await db.insert(userTable, {userIdColumn:owner.id,textColumn:text,isSyncedWithCloudColumn:1});
+final note =DatabaseNote(id: noteid, userId: owner.id, text: text, isSyncedWithCloud: true);
+return note;
+}
+
+Future<DatabaseUser>getUser({required String email})async{
+    final db =_getDatabaseOrThrow();
+    final result=await db.query(userTable,limit: 1,
+    where: 'email=?',whereArgs: [email.toLowerCase()]);
+    if (result.isEmpty) {
+      CouldNotFindUserException();
+
+    }
+    return DatabaseUser.fromROw(result.first);
+  }
 Future<DatabaseUser>createUser({required String email})async{
   final db =_getDatabaseOrThrow();
   final results=await db.query(userTable,limit: 1,
