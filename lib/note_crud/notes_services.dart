@@ -15,10 +15,29 @@ class CouldNotDelteUserException implements Exception{}
 class UserAlreadyExistException implements Exception{}
 class CouldNotFindUserException implements Exception{}
 class CouldDeleteNoteException implements Exception{}
+class CouldFindNoteException implements Exception{}
 
 class NotesService {
   Database? _db;
+  Future <DatabaseNote>getNote({required int id})async{
+    final db =_getDatabaseOrThrow();
+    final notes= await db.query(noteTable,limit:
+     1,where: "id=?",whereArgs: [id]);
+     if (notes.isEmpty) {
 
+throw CouldFindNoteException();
+     }
+     return DatabaseNote.fromROw(notes.first);
+  }
+  Future<int>deleteAllNote({required int userId})async {
+    final db=_getDatabaseOrThrow();
+    final deleteAllNote= await db.delete(noteTable);
+  if (deleteAllNote.isNull) {
+  throw CouldDeleteNoteException();
+
+}
+return deleteAllNote;
+  }
 Future<void>deleteNote({required int id})async{
 final db=_getDatabaseOrThrow();
 final deletecount =db.delete(noteTable,
