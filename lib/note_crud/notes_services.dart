@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'dart:js_interop';
 
 import 'package:flutter/foundation.dart';
@@ -6,25 +7,35 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-
-class DatabaseAlreadyOpenException implements Exception {}
-class UnableToGetDocumentDirectoryException implements Exception{}
-class MissingPlatformDirectoryException implements Exception {}
-class DatabaseIsNotOpenException implements Exception{}
-class CouldNotDelteUserException implements Exception{}
-class UserAlreadyExistException implements Exception{}
-class CouldNotFindUserException implements Exception{}
-class CouldDeleteNoteException implements Exception{}
-class CouldFindNoteException implements Exception{}
-
+import 'crud_exception.dart';
 class NotesService {
   Database? _db;
-  Future <DatabaseNote>getNote({required int id})async{
-    final db =_getDatabaseOrThrow();
-    final notes= await db.query(noteTable,limit:
-     1,where: "id=?",whereArgs: [id]);
-     if (notes.isEmpty) {
+  Future<DatabaseNote>updateNote({required DatabaseNote note,required String text})
+async{
+  final db =_getDatabaseOrThrow();
+  await getNote(id:note.id);
+ final updateCount= await db.update(noteTable,{textColumn:text,isSyncedWithCloudColumn:0,});
+if (updateCount==0) {
+throw CouldUpdateNoteException();
+}else{
+  return await getNote(id: note.id);
+}
 
+}
+  Future<Iterable <DatabaseNote>>getAllNote()async{
+    final db =_getDatabaseOrThrow();
+    final notes= await db.query(noteTable);
+
+     if (notes.isEmpty) {
+throw CouldFindNoteException();
+     }
+     return notes.map((notesRow) => DatabaseNote.fromROw(notesRow));
+  }
+   Future<DatabaseNote>getNote({required int id})async{
+    final db =_getDatabaseOrThrow();
+    final notes= await db.query(noteTable,limit: 1,where: 'id =?',whereArgs: [id]);
+
+     if (notes.isEmpty) {
 throw CouldFindNoteException();
      }
      return DatabaseNote.fromROw(notes.first);
@@ -32,7 +43,7 @@ throw CouldFindNoteException();
   Future<int>deleteAllNote({required int userId})async {
     final db=_getDatabaseOrThrow();
     final deleteAllNote= await db.delete(noteTable);
-  if (deleteAllNote.isNull) {
+  if (deleteAllNote==0) {
   throw CouldDeleteNoteException();
 
 }
