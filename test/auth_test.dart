@@ -3,6 +3,7 @@ import 'package:flutter_application_1/services/auth/auth_exception.dart';
 import 'package:flutter_application_1/services/auth/auth_provider.dart';
 import 'package:flutter_application_1/services/auth/auth_user.dart';
 import 'package:test/test.dart';
+import 'test_exception.dart';
 
 void main(){
 
@@ -16,8 +17,8 @@ void main(){
    expect(provider.logout(), throwsA(const TypeMatcher<NotInitializedException>()));
 
     });
-       test('it shoud be initialized to begin with', () async {
-      await provider.initializeApp();
+    test('it shoud be initialized to begin with', () async {
+  await provider.initializeApp();
 
       expect( provider._isinitialized, true);
 
@@ -68,7 +69,9 @@ final user =provider.currentUser;
 
   });
 }
-class NotInitializedException implements Exception{}
+
+
+
 class MockAuthProvider implements AuthProvider{
 
   AuthUser? _user;
@@ -93,7 +96,7 @@ return login(email: email, password: password);
 
 
   @override
-  // TODO: implement currentUser
+  //
   AuthUser? get currentUser => _user;
 
 

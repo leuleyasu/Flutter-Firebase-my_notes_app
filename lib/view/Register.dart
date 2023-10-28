@@ -14,7 +14,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  late final TextEditingController _email;
+   late final TextEditingController _email;
   late final TextEditingController _password;
   @override
   void initState() {

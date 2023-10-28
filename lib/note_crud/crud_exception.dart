@@ -1,6 +1,5 @@
 class DatabaseAlreadyOpenException implements Exception {}
 class UnableToGetDocumentDirectoryException implements Exception{}
-
 class DatabaseIsNotOpenException implements Exception{}
 class CouldNotDelteUserException implements Exception{}
 class UserAlreadyExistException implements Exception{}
