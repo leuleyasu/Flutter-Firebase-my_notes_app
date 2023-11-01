@@ -9,10 +9,12 @@ import '../../firebase_options.dart';
 class FirebaseAuthProvider implements AuthProvider {
   @override
   Future<void> initializeApp() async {
+    
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
+
 
   @override
   Future<AuthUser> createuser({
