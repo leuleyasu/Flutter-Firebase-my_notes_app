@@ -2,15 +2,34 @@
 import 'package:flutter/material.dart';
 import 'dart:developer' as developertool show log;
 import 'package:flutter_application_1/constants/Routes.dart';
+import 'package:flutter_application_1/note_crud/notes_services.dart';
 import 'package:flutter_application_1/services/auth/auth_service.dart';
+import 'package:flutter_application_1/enum/menu_action.dart';
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
 
   @override
   State<NotesPage> createState() => _NotesPageState();
 }
-enum MenuAction {logout}
+
 class _NotesPageState extends State<NotesPage> {
+
+late final NotesService _notesService ;
+      String get useremail =>AuthService.firbase().currentUser!.email!;
+
+
+      @override
+  void initState() {
+   _notesService=NotesService();
+   _notesService.open();
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _notesService.close();
+    super.dispose();
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,9 +70,42 @@ developertool.log(MenuAction.logout.toString());
 
 ],
       ),
+body:FutureBuilder(future: _notesService.getOrCreateUser(email: useremail)
+,builder: (context, snapshot) {
 
+
+    switch (snapshot.connectionState) {
+      case ConnectionState.done:
+return StreamBuilder(
+  stream: _notesService.allNote,
+  builder: (context, snapshot) {
+    switch (snapshot.connectionState) {
+      case  ConnectionState.done:
+return const Text("data");
+      default: return
+    const   CircularProgressIndicator();
+    }
+  },
+
+  );
+
+      default: return
+     const CircularProgressIndicator();
+    }
+
+
+},
+)
     );
+
   }
+
+
+
+
+
+
+
 
 }
 Future<bool> showLogOutDialog(BuildContext context) {

@@ -11,9 +11,25 @@ class NotesService {
   Database? _db;
 List<DatabaseNote> _notes=[] ;
 
-final _noteStreamController=
-StreamController <List<DatabaseNote>>.broadcast();
+final _noteStreamController=StreamController <List<DatabaseNote>>.broadcast();
+Stream<List<DatabaseNote>> get allNote=>_noteStreamController.stream;
 
+Future<DatabaseUser>getOrCreateUser({required String email})async{
+try {
+    final user= await getUser(email: email);
+    return user;
+
+
+} on CouldNotFindUserException{
+return await createUser(email: email);
+}
+
+ catch (e) {
+ rethrow;
+}
+
+
+}
 
 Future<void>_cachenote()async{
 
@@ -72,7 +88,7 @@ return getallnotes;
 
     else{
       final note =DatabaseNote.fromROw(notes.first);
-
+      // it removes from _notes list and the getAllNote Function will featch the updated  data from the databse
   _notes.removeWhere((note) => note.id==id);
    _notes.add(note);
    _noteStreamController.add(_notes);
@@ -144,6 +160,7 @@ _noteStreamController.add(_notes);
     final db = _getDatabaseOrThrow();
     final results = await db.query(userTable,
         limit: 1, where: "email=?", whereArgs: [email.toLowerCase()]);
+
     if (results.isNotEmpty) {
       throw UserAlreadyExistException();
     }

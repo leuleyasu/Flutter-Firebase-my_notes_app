@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/services/auth/auth_service.dart';
-import 'package:flutter_application_1/view/Notes.dart';
+import 'package:flutter_application_1/notes/Notes.dart';
 import 'package:flutter_application_1/view/verifyemail.dart';
 import 'dart:developer' as developertool show log;
 class Homepage extends StatefulWidget {
