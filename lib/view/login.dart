@@ -40,6 +40,7 @@ class _LoginState extends State<Login> {
         future: AuthService.firbase().initializeApp(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
+
             case ConnectionState.done:
               return Column(
                 children: [

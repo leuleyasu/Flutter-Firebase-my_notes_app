@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/view/Notes.dart';
+import 'package:flutter_application_1/notes/Notes.dart';
+import 'package:flutter_application_1/notes/new_note.dart';
 import 'package:flutter_application_1/view/Register.dart';
 import 'package:flutter_application_1/constants/Routes.dart';
 import 'package:flutter_application_1/view/login.dart';
@@ -33,6 +34,7 @@ class _MyAppState extends State<MyApp> {
           notesroute: (context) => const NotesPage(),
           registerroute: (context) => const Register(),
           verifyemail: (context) => const VerifyEmail(),
+          newnote:(context) => const NewNote(),
         });
   }
 }
