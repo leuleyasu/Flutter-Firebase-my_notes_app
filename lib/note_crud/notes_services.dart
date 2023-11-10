@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:js_interop';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -8,10 +7,19 @@ import 'package:path_provider/path_provider.dart';
 import 'crud_exception.dart';
 
 class NotesService {
+  // singleton pattern to ensure the same instance is creating everywhere
+  static final NotesService _shared=NotesService._sharedInstance();
+  NotesService._sharedInstance(){
+    _noteStreamController=StreamController<List<DatabaseNote>>.broadcast(
+onListen: (){
+  _noteStreamController.sink.add(_notes);
+}
+    );
+  }
+  factory NotesService()=>_shared;
   Database? _db;
 List<DatabaseNote> _notes=[] ;
-
-final _noteStreamController=StreamController <List<DatabaseNote>>.broadcast();
+late final StreamController <List<DatabaseNote>> _noteStreamController;
 Stream<List<DatabaseNote>> get allNote=>_noteStreamController.stream;
 
 Future<DatabaseUser>getOrCreateUser({required String email})async{
@@ -111,9 +119,9 @@ _noteStreamController.add(_notes);
 
   Future<void> deleteNote({required int id}) async {
     final db = _getDatabaseOrThrow();
-    final deletedcount = db.delete(noteTable, where: 'id=?', whereArgs: [id]);
+    final deletedcount = await  db.delete(noteTable, where: 'id=?', whereArgs: [id]);
 
-    if (deletedcount.isNull) {
+    if (deletedcount==0) {
       throw CouldDeleteNoteException();
     }
     else{

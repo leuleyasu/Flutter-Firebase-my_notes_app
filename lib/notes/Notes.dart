@@ -5,6 +5,8 @@ import 'package:flutter_application_1/constants/Routes.dart';
 import 'package:flutter_application_1/note_crud/notes_services.dart';
 import 'package:flutter_application_1/services/auth/auth_service.dart';
 import 'package:flutter_application_1/enum/menu_action.dart';
+
+import '../utilities/ShowErrorDialog.dart';
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
 
@@ -24,12 +26,7 @@ late final NotesService _notesService ;
    _notesService.open();
     super.initState();
   }
-  @override
-  void dispose() {
-    _notesService.close();
-    super.dispose();
 
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,26 +104,4 @@ return const Text("data");
 
 
 
-}
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog<bool>(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: const Text("Signout"),
-          content: const Text("Are u sure u want to sign out?"),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: const Text("cancel")),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-                child: const Text("Logout"))
-          ],
-        );
-      }).then((value) => value ?? false);
 }
