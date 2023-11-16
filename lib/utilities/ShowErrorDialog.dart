@@ -21,3 +21,12 @@ Future<bool> showLogOutDialog(BuildContext context) {
    }).then((value) => value??false);
 
 }
+
+Future<bool> showDelteDialog(BuildContext context){
+
+return showGenericDialog(context: context, title: const  Text("delete"), content: "are you sure you want to delete",
+optionBuilder: ()=>{
+"cancel":false,
+"Delete":true,
+}).then((value) => value??false );
+}

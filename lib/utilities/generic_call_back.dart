@@ -21,7 +21,7 @@ if (value!=null) {
 
 } else {
   Navigator.of(context).pop();
-
+ 
 }
 
   }, child: Text(dynamicTitle));
