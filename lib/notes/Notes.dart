@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as developertool show log;
 import 'package:flutter_application_1/constants/Routes.dart';
 import 'package:flutter_application_1/note_crud/notes_services.dart';
+import 'package:flutter_application_1/notes/notes_list.dart';
 import 'package:flutter_application_1/services/auth/auth_service.dart';
 import 'package:flutter_application_1/enum/menu_action.dart';
 
@@ -68,13 +69,12 @@ class _NotesPageState extends State<NotesPage> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         final allnote = snapshot.data as List<DatabaseNote>;
+                        return NotesList(note: allnote, onDeleteNote: (note) async{
 
-                        return ListView.builder(
-                            itemCount: allnote.length,
-                            itemBuilder: (context, index) {
-                              final note = allnote[index];
-                              return Text(note.text);
-                            });
+                                  await _notesService.deleteNote(id: note.id);
+
+
+                        });
                       } else {
                         return const CircularProgressIndicator();
                       }
